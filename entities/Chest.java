@@ -3,13 +3,28 @@ package entities;
 import items.Item;
 import java.util.ArrayList;
 
-public class Chest {
-    private ArrayList<Item> items;  // List of consistency in chest
-    private boolean broken;  // 
+public class Chest extends Entity {
 
-    public Chest() {
-        items = new ArrayList<Item>();
+    private ArrayList<Item> items;
+    private boolean broken;
+
+    public Chest(int x, int y, int width, int height) {
+        super(x, y, width, height);
+
+        items = new ArrayList<>();
         broken = false;
+    }
+
+    @Override
+    public void update() {
+        // Chest has no movement logic so we dont have anything 
+    }
+
+    @Override
+    public void draw(java.awt.Graphics2D g2) {
+        if (sprite != null) {
+            g2.drawImage(sprite, x, y, width, height, null);
+        }
     }
 
     public void addItem(Item item) {
@@ -17,14 +32,18 @@ public class Chest {
     }
 
     public ArrayList<Item> breakChest() {
-        if(broken) {
+        if (broken) {
             return null;
         }
         broken = true;
+
+        // mark for removal from EntityManager
+        this.active = false;
+
         return items;
     }
 
-    public boolean isBroked() {  // If it returns true EntityManager must delete this object
+    public boolean isBroken() {
         return broken;
     }
 }
