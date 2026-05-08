@@ -40,46 +40,64 @@ Java Dungeon Game is a tile-based dungeon crawler where the player explores room
 src/
 │
 ├── main/
-│   ├── Main.java             # Entry point — launches the game window
-│   ├── GamePanel.java        # Core game loop and rendering (paintComponent)
-│   └── GameState.java        # Enum: MENU, PLAYING, PAUSED, GAME_OVER
+│   ├── Main.java             # Entry point — starts the game window and initializes everything
+│   ├── GamePanel.java        # Core game loop, update() and paintComponent() for rendering
+│   └── GameState.java        # Enum for game states: MENU, PLAYING, PAUSED, GAME_OVER
 │
 ├── entities/
-│   ├── Entity.java           # Abstract base — x, y, width, height, BufferedImage sprite
-│   │   ├── Player.java       # Movement, interaction, inventory reference
-│   │   ├── Enemy.java        # AI, patrol, attack logic
-│   │   ├── Chest.java        # Lootable chest; holds Item list; draws chest sprite
-│   │   └── Door.java         # Locked door; unlock(Key); draws door sprite
+│   ├── Entity.java           # Base class — position, size, sprite, basic update/draw logic
+│   ├── Player.java           # Player controls, movement, interaction, inventory access
+│   ├── Enemy.java            # Enemy AI, movement patterns, attack logic
+│   ├── Chest.java            # Loot container — stores items, can be opened/broken
+│   └── Door.java             # Door logic — locked/unlocked state, interaction with keys
 │
 ├── items/
-│   ├── Item.java             # Abstract base — name, BufferedImage icon, use()
-│   │   ├── Food.java         # Abstract — healAmount; eat() restores HP
-│   │   │   ├── Apple.java    # +5 HP
-│   │   │   ├── Cake.java     # +20 HP
-│   │   │   └── Potion.java   # +15 HP, cures debuffs
-│   │   ├── Key.java          # Opens Door entities
-│   │   └── Crowbar.java      # Forces open Chest entities
+│   ├── Item.java             # Base item class — name, icon (sprite), use() method
+│   ├── Food.java             # Abstract food item — healing logic
+│   ├── Apple.java            # Small heal item (+HP)
+│   ├── Cake.java             # Medium heal item (+HP)
+│   ├── Potion.java           # Special heal item + effects
+│   ├── Key.java              # Used to unlock doors
+│   └── Crowbar.java          # Used to break chests or force interactions
 │
 ├── world/
-│   ├── Room.java             # Tile grid, exits, list of entities in room
-│   ├── Dungeon.java          # Room[][]; generates layout; tracks current room
-│   └── TileManager.java      # Loads tileset PNG; draws tiles via g2.drawImage()
+│   ├── Room.java             # Single room — tile grid, entities, exits/doors
+│   ├── Dungeon.java          # Collection of rooms — manages map generation and transitions
+│   └── TileManager.java      # Loads and renders tile map (floor, walls, obstacles)
 │
 ├── ui/
-│   ├── Menu.java             # Main menu screen; draws buttons
-│   ├── HUD.java              # HP bar, key count, active item icon
-│   └── InventoryUI.java      # Grid overlay; renders Item icons from Inventory
+│   ├── Menu.java             # Main menu UI — buttons, start/exit options
+│   ├── HUD.java              # In-game UI — health bar, items, key count
+│   └── InventoryUI.java      # Inventory screen — displays items in grid layout
 │
 ├── input/
-│   └── KeyboardHandler.java  # KeyListener; boolean map keyPressed[]
+│   └── KeyboardHandler.java  # Handles keyboard input — key states and actions
 │
 ├── managers/
-│   ├── EntityManager.java    # List<Entity>; update() and draw() all entities
-│   ├── CollisionManager.java # Tile collision + entity–entity overlap checks
-│   └── Inventory.java        # Slots[], add/remove/get; used by Player
+│   ├── EntityManager.java    # Manages all entities — update and render loop
+│   ├── CollisionManager.java # Handles collisions between entities and tiles
+│   └── Inventory.java        # Player inventory system — add/remove items, slots
 │
-└── utils/
-    └── Constants.java        # TILE_SIZE, SCREEN_COLS, SCREEN_ROWS, FPS, SCALE
+├── graphics/
+│   ├── SpriteLoader.java     # Loads images from resources folder
+│   ├── Animator.java         # Handles sprite animations (frame switching)
+│   └── Assets.java           # Stores all loaded sprites in memory for easy access
+│
+├── utils/
+│   └── Constants.java        # Game constants — screen size, FPS, tile size, etc.
+│
+└── resources/
+    ├── sprites/              # All game images (characters, items, tiles, UI)
+    │   ├── player/
+    │   ├── enemy/
+    │   ├── items/
+    │   ├── tiles/
+    │   ├── doors/
+    │   └── chests/
+    │
+    └── sounds/               # Game audio files
+        ├── music/
+        └── sfx/
 ```
 
 ---
