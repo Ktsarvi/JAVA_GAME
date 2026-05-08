@@ -3,7 +3,7 @@ package items;
 public class Cake extends Food {
   
   public Cake(){
-    super("Cake", 25);
+    super("Cake", 25, false);
   }
 
   @Override
