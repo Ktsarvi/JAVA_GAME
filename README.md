@@ -30,7 +30,8 @@ Java Dungeon Game is a tile-based dungeon crawler where the player explores room
 - 🎒 **Inventory system** — collect and manage items (keys, crowbars, food) with slot limits
 - 🔑 **Doors & Chests** — unlock doors with keys and break chests with crowbars for loot
 - 🍖 **Food & Healing** — pick up food to restore health (apples, cakes, potions)
-- 💀 **Respawn** — player respawns at their spawn point on death
+- 💀 **Respawn & Checkpoints** — player respawns at their spawn point; achievements act as checkpoints
+- 🏆 **Achievement System** — unlock achievements based on world triggers and progress
 - 🖥️ **HUD** — on-screen display showing player stats
 - 🎵 **Sound & Sprites** — audio effects and sprite-based graphics
 - ⌨️ **Keyboard input** — responsive keyboard-driven controls
@@ -45,8 +46,11 @@ Java Dungeon Game is a tile-based dungeon crawler where the player explores room
 │   ├── LivingBeing.java      # Abstract — HP, strength, speed, movement, attack, damage
 │   ├── Player.java           # Player — input handling, respawn, inventory, interactions
 │   ├── Enemy.java            # Enemy — AI aggression, chase, loot drops
-│   ├── Chest.java            # Loot container — stores items, can be broken
-│   └── Door.java             # Door — locked/unlocked state, key-based unlock
+│   ├── Chest.java            # Loot container — stores items, implements Activatable
+│   ├── Door.java             # Door — locked/unlocked state, key-based unlock
+│   ├── Barrel.java           # Barrel — implements Activatable, can be broken
+│   ├── Achievement.java      # Checkpoint — updates spawn point on collision
+│   └── Activatable.java      # Interface — defines activate() and isActivated()
 │
 ├── items/
 │   ├── Item.java             # Abstract base — name, icon, use(), consumable flag
@@ -63,7 +67,9 @@ Java Dungeon Game is a tile-based dungeon crawler where the player explores room
 │   └── World.java            # Game world — entities, executables, room transitions, step()
 │
 ├── managers/
-│   └── Inventory.java        # Slot-based inventory — add/remove/has/get items
+│   ├── Inventory.java        # Slot-based inventory — add/remove/has/get items
+│   ├── AchievementManager.java # Tracks progress, notifies on unlock
+│   └── Executable.java       # Interface — defines execute() for logic/actions
 │
 └── README.md
 ```
@@ -126,8 +132,14 @@ Item (abstract)
 └── Crowbar
 
 Entity
-├── Chest
-└── Door
+├── Chest (implements Activatable)
+├── Door
+├── Barrel (implements Activatable)
+└── Achievement (implements Executable)
+
+Interfaces
+├── Activatable (entities)
+└── Executable (managers)
 ```
 
 ### Key Relationships
@@ -140,7 +152,10 @@ Entity
 | `Room` | `Entity`, `Door` (contains items, beings, doors) |
 | `World` | `Room`, `Entity` (manages current room and entities) |
 | `Door` | `Key` (unlock by matching ID) |
-| `Chest` | `Item` (stores loot) |
+| `Chest` | `Item` (stores loot), `Activatable` |
+| `Barrel` | `Activatable` |
+| `Achievement`| `Player` (for checkpoint), `Executable` |
+| `AchievementManager` | `Achievement` (manages all unlocks) |
 | `Lock` | String key ID (standalone lock mechanism) |
 
 ---

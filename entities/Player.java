@@ -53,6 +53,12 @@ public class Player extends LivingBeing {
         }
     }
 
+    public void setSpawnPoint(int x, int y) {
+        this.spawnX = x;
+        this.spawnY = y;
+        System.out.println("Spawn point updated to: " + x + ", " + y);
+    }
+
     public Inventory getInventory() { return inventory; }
     public int getSpawnX() { return spawnX; }
     public int getSpawnY() { return spawnY; }

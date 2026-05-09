@@ -3,7 +3,7 @@ package entities;
 import items.Item;
 import java.util.ArrayList;
 
-public class Chest extends Entity {
+public class Chest extends Entity implements Activatable {
 
     private ArrayList<Item> items;
     private boolean broken;
@@ -44,6 +44,16 @@ public class Chest extends Entity {
     }
 
     public boolean isBroken() {
+        return broken;
+    }
+
+    @Override
+    public void activate() {
+        breakChest();
+    }
+
+    @Override
+    public boolean isActivated() {
         return broken;
     }
 }
