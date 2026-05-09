@@ -1,3 +1,5 @@
+package world;
+
 import entities.Entity;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ public class World {
 
     public void step() {
         for (Entity e : entities) e.update();
-        for (Runnable r : executables) r.execute();
+        for (Runnable r : executables) r.run();
     }
 
     public void render(Graphics2D g) {

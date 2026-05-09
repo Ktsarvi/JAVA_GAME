@@ -1,3 +1,5 @@
+package items;
+
 public class Lock {
 
     private boolean locked;

@@ -2,9 +2,9 @@ package items;
 
 public abstract class Food extends Item {
     protected int healAmount;  // How much HP it will heal player
-    protected bool speedBoost;    // If food gave speed boost to player
+    protected boolean speedBoost;    // If food gave speed boost to player
 
-    public Food(String name, int healAmount, bool speedBoost) {
+    public Food(String name, int healAmount, boolean speedBoost) {
         super(name);
         this.healAmount = healAmount;
         this.speedBoost = speedBoost;
@@ -24,7 +24,7 @@ public abstract class Food extends Item {
         return healAmount;
     }
 
-    public bool getSpeedBoost() {
+    public boolean getSpeedBoost() {
         return speedBoost;
     }
 }

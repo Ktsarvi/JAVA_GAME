@@ -9,6 +9,7 @@ A 2D dungeon crawler game built with Java. Navigate through procedurally structu
 - [About](#about)
 - [Features](#features)
 - [Project Structure](#project-structure)
+- [Class Overview](#class-overview)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
 - [Controls](#controls)
@@ -24,10 +25,12 @@ Java Dungeon Game is a tile-based dungeon crawler where the player explores room
 ## Features
 
 - 🗺️ **Dungeon exploration** — move between interconnected rooms inside a dungeon
-- ⚔️ **Enemies** — encounter and defeat enemies that roam the dungeon
-- 🎒 **Inventory system** — collect and manage items (keys, crowbars, food)
-- 🔑 **Doors & Chests** — unlock doors with keys and open chests for loot
-- 🍖 **Food** — pick up food to restore health
+- ⚔️ **Combat system** — attack enemies and take damage with HP/strength mechanics
+- 🧟 **Enemy AI** — enemies detect and chase the player within aggro range
+- 🎒 **Inventory system** — collect and manage items (keys, crowbars, food) with slot limits
+- 🔑 **Doors & Chests** — unlock doors with keys and break chests with crowbars for loot
+- 🍖 **Food & Healing** — pick up food to restore health (apples, cakes, potions)
+- 💀 **Respawn** — player respawns at their spawn point on death
 - 🖥️ **HUD** — on-screen display showing player stats
 - 🎵 **Sound & Sprites** — audio effects and sprite-based graphics
 - ⌨️ **Keyboard input** — responsive keyboard-driven controls
@@ -37,68 +40,108 @@ Java Dungeon Game is a tile-based dungeon crawler where the player explores room
 ## Project Structure
 
 ```
-src/
-│
-├── main/
-│   ├── Main.java             # Entry point — starts the game window and initializes everything
-│   ├── GamePanel.java        # Core game loop, update() and paintComponent() for rendering
-│   └── GameState.java        # Enum for game states: MENU, PLAYING, PAUSED, GAME_OVER
-│
 ├── entities/
-│   ├── Entity.java           # Base class — position, size, sprite, basic update/draw logic
-│   ├── Player.java           # Player controls, movement, interaction, inventory access
-│   ├── Enemy.java            # Enemy AI, movement patterns, attack logic
-│   ├── Chest.java            # Loot container — stores items, can be opened/broken
-│   └── Door.java             # Door logic — locked/unlocked state, interaction with keys
+│   ├── Entity.java           # Abstract base — position, size, sprite, collision, active flag
+│   ├── LivingBeing.java      # Abstract — HP, strength, speed, movement, attack, damage
+│   ├── Player.java           # Player — input handling, respawn, inventory, interactions
+│   ├── Enemy.java            # Enemy — AI aggression, chase, loot drops
+│   ├── Chest.java            # Loot container — stores items, can be broken
+│   └── Door.java             # Door — locked/unlocked state, key-based unlock
 │
 ├── items/
-│   ├── Item.java             # Base item class — name, icon (sprite), use() method
-│   ├── Food.java             # Abstract food item — healing logic
-│   ├── Apple.java            # Small heal item (+HP)
-│   ├── Cake.java             # Medium heal item (+HP)
-│   ├── Potion.java           # Special heal item + effects
-│   ├── Key.java              # Used to unlock doors
-│   └── Crowbar.java          # Used to break chests or force interactions
+│   ├── Item.java             # Abstract base — name, icon, use(), consumable flag
+│   ├── Food.java             # Abstract food — heal amount, speed boost
+│   ├── Apple.java            # Small heal (+5 HP)
+│   ├── Cake.java             # Medium heal (+25 HP)
+│   ├── Potion.java           # Large heal (+50 HP) + speed boost
+│   ├── Key.java              # Unlocks matching doors by ID
+│   ├── Crowbar.java          # Breaks chests
+│   └── Lock.java             # Lock mechanism — key-based unlock/lock logic
 │
 ├── world/
-│   ├── Room.java             # Single room — tile grid, entities, exits/doors
-│   ├── Dungeon.java          # Collection of rooms — manages map generation and transitions
-│   └── TileManager.java      # Loads and renders tile map (floor, walls, obstacles)
-│
-├── ui/
-│   ├── Menu.java             # Main menu UI — buttons, start/exit options
-│   ├── HUD.java              # In-game UI — health bar, items, key count
-│   └── InventoryUI.java      # Inventory screen — displays items in grid layout
-│
-├── input/
-│   └── KeyboardHandler.java  # Handles keyboard input — key states and actions
+│   ├── Room.java             # Single room — items, living beings, doors, draw/update
+│   └── World.java            # Game world — entities, executables, room transitions, step()
 │
 ├── managers/
-│   ├── EntityManager.java    # Manages all entities — update and render loop
-│   ├── CollisionManager.java # Handles collisions between entities and tiles
-│   └── Inventory.java        # Player inventory system — add/remove items, slots
+│   └── Inventory.java        # Slot-based inventory — add/remove/has/get items
+│
+└── README.md
+```
+
+### Planned (not yet implemented)
+
+```
+├── main/
+│   ├── Main.java             # Entry point
+│   ├── GamePanel.java        # Core game loop, update/render
+│   └── GameState.java        # Enum: MENU, PLAYING, PAUSED, GAME_OVER
+│
+├── world/
+│   ├── Dungeon.java          # Collection of rooms, map generation
+│   └── TileManager.java      # Tile map loading and rendering
+│
+├── ui/
+│   ├── Menu.java             # Main menu UI
+│   ├── HUD.java              # In-game health bar, key count
+│   └── InventoryUI.java      # Inventory grid display
+│
+├── input/
+│   └── KeyboardHandler.java  # Keyboard input states
+│
+├── managers/
+│   ├── EntityManager.java    # Entity update/render loop
+│   └── CollisionManager.java # Collision detection
 │
 ├── graphics/
-│   ├── SpriteLoader.java     # Loads images from resources folder
-│   ├── Animator.java         # Handles sprite animations (frame switching)
-│   └── Assets.java           # Stores all loaded sprites in memory for easy access
+│   ├── SpriteLoader.java     # Image loading
+│   ├── Animator.java         # Sprite animation frames
+│   └── Assets.java           # Loaded sprite storage
 │
 ├── utils/
-│   └── Constants.java        # Game constants — screen size, FPS, tile size, etc.
+│   └── Constants.java        # Screen size, FPS, tile size
 │
 └── resources/
-    ├── sprites/              # All game images (characters, items, tiles, UI)
-    │   ├── player/
-    │   ├── enemy/
-    │   ├── items/
-    │   ├── tiles/
-    │   ├── doors/
-    │   └── chests/
-    │
-    └── sounds/               # Game audio files
-        ├── music/
-        └── sfx/
+    ├── sprites/              # Character, item, tile, UI images
+    └── sounds/               # Music and SFX
 ```
+
+---
+
+## Class Overview
+
+### Inheritance Hierarchy
+
+```
+Entity (abstract)
+└── LivingBeing (abstract)
+    ├── Player
+    └── Enemy
+
+Item (abstract)
+├── Food (abstract)
+│   ├── Apple
+│   ├── Cake
+│   └── Potion
+├── Key
+└── Crowbar
+
+Entity
+├── Chest
+└── Door
+```
+
+### Key Relationships
+
+| Class | Uses |
+|-------|------|
+| `Player` | `Inventory`, `Food`, `Key`, `Door`, `Chest`, `Crowbar` |
+| `Enemy` | `Item` (loot drops), `Player` (chase target) |
+| `Inventory` | `Item` (slot storage) |
+| `Room` | `Entity`, `Door` (contains items, beings, doors) |
+| `World` | `Room`, `Entity` (manages current room and entities) |
+| `Door` | `Key` (unlock by matching ID) |
+| `Chest` | `Item` (stores loot) |
+| `Lock` | String key ID (standalone lock mechanism) |
 
 ---
 

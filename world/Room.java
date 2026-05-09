@@ -1,3 +1,5 @@
+package world;
+
 import entities.Door;
 import entities.Entity;
 import java.awt.BasicStroke;
