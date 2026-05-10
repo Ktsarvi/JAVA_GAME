@@ -29,7 +29,8 @@ Based on the task division and README:
 | `Constants.java`        | Screen size, FPS, tile size      |
 | `resources/`            | Sprites + sounds                 |
 
-Directory Structure
+# Directory Structure
+```
 resources/
 ├── sprites/
 │   ├── player.png        (48×48 or 48×192 spritesheet: 4 directions) teymur
@@ -56,3 +57,4 @@ resources/
     ├── pickup.wav
     ├── door_open.wav
     └── game_over.wav
+```
