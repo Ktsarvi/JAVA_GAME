@@ -30,20 +30,21 @@ Based on the task division and README:
 | `resources/`            | Sprites + sounds                 |
 
 # Directory Structure
+
 ```
 resources/
 ├── sprites/
-│   ├── player.png        (48×48 or 48×192 spritesheet: 4 directions) teymur
-│   ├── enemy.png         (48×48) teymur
 │   ├── boss.png          (64×64 or 96×96) teymur
-│   ├── door_locked.png   (48×48) teymur
-│   ├── door_open.png     (48×48) teymur
-│   ├── floor.png         (48×48) teymur
-│   ├── wall.png          (48×48) teymur
-│   └── achievement.png   (48×48) teymur
 └── sounds/               (optional)
     ├── attack.wav
     ├── pickup.wav
     ├── door_open.wav
     └── game_over.wav
 ```
+
+# Important
+
+take walls and floor from punyworld-tileset because our wall and floor sprites are not matching with each other
+or
+take walls and floor from dungeon-tiles, take also door and open (broken) door png
+take player and enemies from spritesheet.png
