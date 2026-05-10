@@ -47,4 +47,4 @@ resources/
 take walls and floor from punyworld-tileset because our wall and floor sprites are not matching with each other
 or
 take walls and floor from dungeon-tiles, take also door and open (broken) door png
-take player and enemies from spritesheet.png
+take player and enemies from spritesheet.png (may take boss from here)
