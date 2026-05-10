@@ -13,6 +13,7 @@ A 2D dungeon crawler game built with Java. Navigate through procedurally structu
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
 - [Controls](#controls)
+- [Resources](#resources)
 
 ---
 
@@ -25,16 +26,19 @@ Java Dungeon Game is a tile-based dungeon crawler where the player explores room
 ## Features
 
 - 🗺️ **Dungeon exploration** — move between interconnected rooms inside a dungeon
-- ⚔️ **Combat system** — attack enemies and take damage with HP/strength mechanics
+- ⚔️ **Combat system** — melee attacks and ranged gun combat with HP/strength mechanics
 - 🧟 **Enemy AI** — enemies detect and chase the player within aggro range
-- 🎒 **Inventory system** — collect and manage items (keys, crowbars, food) with slot limits
-- 🔑 **Doors & Chests** — unlock doors with keys and break chests with crowbars for loot
+- 👹 **Boss fight** — Room 5 features a boss with minions
+- 🎒 **Inventory system** — collect and manage items (keys, crowbars, food, gun) with slot limits
+- 🔑 **Doors & Chests** — unlock doors with keys and break chests for loot
 - 🍖 **Food & Healing** — pick up food to restore health (apples, cakes, potions)
+- 🔫 **Gun & Bullets** — ranged weapon that fires projectiles at enemies
 - 💀 **Respawn & Checkpoints** — player respawns at their spawn point; achievements act as checkpoints
 - 🏆 **Achievement System** — unlock achievements based on world triggers and progress
-- 🖥️ **HUD** — on-screen display showing player stats
-- 🎵 **Sound & Sprites** — audio effects and sprite-based graphics
+- 🖥️ **HUD** — on-screen display showing player stats, keys, achievements
+- 🎵 **Sound & Sprites** — audio effects and sprite-based graphics (with procedural fallbacks)
 - ⌨️ **Keyboard input** — responsive keyboard-driven controls
+- 🎨 **Procedural graphics** — game works without any sprite files using colored shapes
 
 ---
 
@@ -45,10 +49,11 @@ Java Dungeon Game is a tile-based dungeon crawler where the player explores room
 │   ├── Entity.java           # Abstract base — position, size, sprite, collision, active flag
 │   ├── LivingBeing.java      # Abstract — HP, strength, speed, movement, attack, damage
 │   ├── Player.java           # Player — input handling, respawn, inventory, interactions
-│   ├── Enemy.java            # Enemy — AI aggression, chase, loot drops
+│   ├── Enemy.java            # Enemy — AI aggression, chase, loot drops, boss mode
 │   ├── Chest.java            # Loot container — stores items, implements Activatable
-│   ├── Door.java             # Door — locked/unlocked state, key-based unlock
-│   ├── Barrel.java           # Barrel — implements Activatable, can be broken
+│   ├── Door.java             # Door — locked/unlocked state, key-based unlock, room transitions
+│   ├── Barrel.java           # Barrel — implements Activatable, stores items, can be broken
+│   ├── Bullet.java           # Projectile — moves in direction, deals damage on hit
 │   ├── Achievement.java      # Checkpoint — updates spawn point on collision
 │   └── Activatable.java      # Interface — defines activate() and isActivated()
 │
@@ -60,55 +65,47 @@ Java Dungeon Game is a tile-based dungeon crawler where the player explores room
 │   ├── Potion.java           # Large heal (+50 HP) + speed boost
 │   ├── Key.java              # Unlocks matching doors by ID
 │   ├── Crowbar.java          # Breaks chests
+│   ├── Gun.java              # Ranged weapon — fires bullets with cooldown
 │   └── Lock.java             # Lock mechanism — key-based unlock/lock logic
 │
 ├── world/
 │   ├── Room.java             # Single room — items, living beings, doors, draw/update
-│   └── World.java            # Game world — entities, executables, room transitions, step()
+│   ├── World.java            # Game world — entities, executables, room transitions, step()
+│   ├── Dungeon.java          # 5-room dungeon — level design, enemy/item placement
+│   └── TileManager.java      # Tile grid — floor/wall types, collision, procedural drawing
 │
 ├── managers/
 │   ├── Inventory.java        # Slot-based inventory — add/remove/has/get items
 │   ├── AchievementManager.java # Tracks progress, notifies on unlock
+│   ├── EntityManager.java    # Entity lifecycle — update, draw, remove inactive
+│   ├── CollisionManager.java # Collision detection — player/enemy/bullet/door/room
 │   └── Executable.java       # Interface — defines execute() for logic/actions
 │
-└── README.md
-```
-
-### Planned (not yet implemented)
-
-```
 ├── main/
-│   ├── Main.java             # Entry point
-│   ├── GamePanel.java        # Core game loop, update/render
-│   └── GameState.java        # Enum: MENU, PLAYING, PAUSED, GAME_OVER
-│
-├── world/
-│   ├── Dungeon.java          # Collection of rooms, map generation
-│   └── TileManager.java      # Tile map loading and rendering
+│   ├── Main.java             # Entry point — creates JFrame window
+│   ├── GamePanel.java        # Core game loop (60 FPS), state machine, rendering
+│   └── GameState.java        # Enum: MENU, PLAYING, PAUSED, GAME_OVER, WIN
 │
 ├── ui/
-│   ├── Menu.java             # Main menu UI
-│   ├── HUD.java              # In-game health bar, key count
-│   └── InventoryUI.java      # Inventory grid display
+│   ├── Menu.java             # Main menu — NEW GAME, CONTROLS, QUIT
+│   ├── HUD.java              # Health bar, room name, key count, achievements
+│   └── InventoryUI.java      # Inventory grid (2×5), item use, message toasts
 │
 ├── input/
-│   └── KeyboardHandler.java  # Keyboard input states
-│
-├── managers/
-│   ├── EntityManager.java    # Entity update/render loop
-│   └── CollisionManager.java # Collision detection
+│   └── KeyboardHandler.java  # Keyboard input — WASD, arrows, SPACE, E, I, ESC, 1-9
 │
 ├── graphics/
-│   ├── SpriteLoader.java     # Image loading
+│   ├── SpriteLoader.java     # Image loading from classpath/filesystem
 │   ├── Animator.java         # Sprite animation frames
-│   └── Assets.java           # Loaded sprite storage
+│   └── Assets.java           # Static sprite storage, loads at startup
 │
 ├── utils/
-│   └── Constants.java        # Screen size, FPS, tile size
+│   └── Constants.java        # Screen size (768×576), FPS (60), tile size (48px)
 │
-└── resources/
-    ├── sprites/              # Character, item, tile, UI images
-    └── sounds/               # Music and SFX
+├── resources/
+│   └── sprites/              # (Optional) PNG sprite files
+│
+└── README.md
 ```
 
 ---
@@ -119,9 +116,14 @@ Java Dungeon Game is a tile-based dungeon crawler where the player explores room
 
 ```
 Entity (abstract)
-└── LivingBeing (abstract)
-    ├── Player
-    └── Enemy
+├── LivingBeing (abstract)
+│   ├── Player
+│   └── Enemy
+├── Chest (implements Activatable)
+├── Door
+├── Barrel (implements Activatable)
+├── Bullet
+└── Achievement (implements Executable)
 
 Item (abstract)
 ├── Food (abstract)
@@ -129,13 +131,8 @@ Item (abstract)
 │   ├── Cake
 │   └── Potion
 ├── Key
-└── Crowbar
-
-Entity
-├── Chest (implements Activatable)
-├── Door
-├── Barrel (implements Activatable)
-└── Achievement (implements Executable)
+├── Crowbar
+└── Gun
 
 Interfaces
 ├── Activatable (entities)
@@ -146,16 +143,20 @@ Interfaces
 
 | Class | Uses |
 |-------|------|
-| `Player` | `Inventory`, `Food`, `Key`, `Door`, `Chest`, `Crowbar` |
+| `Player` | `Inventory`, `Food`, `Key`, `Door`, `Chest`, `Crowbar`, `KeyboardHandler` |
 | `Enemy` | `Item` (loot drops), `Player` (chase target) |
 | `Inventory` | `Item` (slot storage) |
 | `Room` | `Entity`, `Door` (contains items, beings, doors) |
 | `World` | `Room`, `Entity` (manages current room and entities) |
-| `Door` | `Key` (unlock by matching ID) |
+| `Dungeon` | `Room`, `TileManager`, `Player` (5-room level design) |
+| `Door` | `Key` (unlock by matching ID), room transitions |
 | `Chest` | `Item` (stores loot), `Activatable` |
-| `Barrel` | `Activatable` |
+| `Barrel` | `Item` (stores loot), `Activatable` |
+| `Bullet` | `Enemy` (damage on collision) |
+| `Gun` | `Bullet` (creates projectiles) |
 | `Achievement`| `Player` (for checkpoint), `Executable` |
 | `AchievementManager` | `Achievement` (manages all unlocks) |
+| `GamePanel` | All managers, UI, World, Player (game loop orchestrator) |
 | `Lock` | String key ID (standalone lock mechanism) |
 
 ---
@@ -172,7 +173,7 @@ Interfaces
 ### Compile
 
 ```bash
-javac -d out -sourcepath src src/main/Main.java
+javac -d out entities/*.java items/*.java managers/*.java world/*.java graphics/*.java input/*.java main/*.java ui/*.java utils/*.java
 ```
 
 ### Run
@@ -193,6 +194,57 @@ java -cp out main.Main
 | `S` / `↓` | Move down |
 | `A` / `←` | Move left |
 | `D` / `→` | Move right |
-| `E` | Interact (open door / chest) |
+| `Space` | Melee attack |
+| `E` | Interact (open chest / barrel / unlock door) |
 | `I` | Toggle inventory |
-| `Esc` | Pause / open menu |
+| `1`-`9` | Use item in inventory slot |
+| `Esc` | Pause / resume |
+| `Enter` | Select menu option / return to menu |
+
+---
+
+## Gameplay Guide
+
+1. **Room 1 (Entrance Hall)** — Kill the enemy to get Key 1, open the chest for a Crowbar and Apple, smash the barrel. Unlock the door on the right.
+2. **Room 2 (The Corridor)** — Fight two enemies, open the chest for Key 2 and a Potion. Proceed right.
+3. **Room 3 (The Armory)** — Find the **Gun** in the chest! Smash barrels for healing. Kill the enemy for Key 3.
+4. **Room 4 (The Gauntlet)** — Three enemies, maze-like walls. Get Key 4 from the fast enemy. Stock up on Potions.
+5. **Room 5 (Boss Chamber)** — Defeat the Boss and two minions to win the game!
+
+---
+
+## Resources
+
+### Optional Sprite Files
+
+The game works **without any sprites** using procedural colored shapes. To add custom graphics:
+
+1. Place PNG files in `resources/sprites/`
+2. Use these exact filenames:
+
+| File | Size | Description |
+|------|------|-------------|
+| `player.png` | 48×48 | Player character |
+| `enemy.png` | 48×48 | Regular enemy |
+| `boss.png` | 64×64 | Boss enemy |
+| `chest.png` | 48×48 | Closed chest |
+| `barrel.png` | 48×48 | Barrel |
+| `door_locked.png` | 48×48 | Locked door |
+| `key.png` | 32×32 | Key icon |
+| `apple.png` | 32×32 | Apple icon |
+| `cake.png` | 32×32 | Cake icon |
+| `potion.png` | 32×32 | Potion icon |
+| `crowbar.png` | 32×32 | Crowbar icon |
+| `gun.png` | 32×32 | Gun icon |
+| `bullet.png` | 16×16 | Bullet |
+| `floor.png` | 48×48 | Floor tile |
+| `wall.png` | 48×48 | Wall tile |
+
+### Where to Find Free Sprites
+
+| Source | URL |
+|--------|-----|
+| **itch.io** | https://itch.io/game-assets/free/tag-2d |
+| **OpenGameArt.org** | https://opengameart.org/ |
+| **Kenney.nl** | https://kenney.nl/assets |
+| **0x72 Dungeon Tileset** | https://0x72.itch.io/dungeontileset-ii |

@@ -38,6 +38,13 @@ public abstract class Entity {  // It is abstract because we will extend it
     // Setters
     public void setActive(boolean active) { this.active = active; }
 
+    public void setSprite(BufferedImage sprite) { this.sprite = sprite; }
+
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     // Getters
     public int getX() { return x; }
     public int getY() { return y; }
