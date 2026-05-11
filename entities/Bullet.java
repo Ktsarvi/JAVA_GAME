@@ -2,7 +2,6 @@ package entities;
 
 import graphics.Assets;
 import utils.Constants;
-import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class Bullet extends Entity {
@@ -34,11 +33,6 @@ public class Bullet extends Entity {
     public void draw(Graphics2D g2) {
         if (sprite != null) {
             g2.drawImage(sprite, x, y, width, height, null);
-        } else {
-            g2.setColor(new Color(255, 200, 50));
-            g2.fillOval(x, y, width, height);
-            g2.setColor(new Color(255, 100, 0));
-            g2.drawOval(x, y, width, height);
         }
     }
 

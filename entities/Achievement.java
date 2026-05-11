@@ -1,13 +1,9 @@
 package entities;
 
 import managers.Executable;
-import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.Graphics2D;
 
-/**
- * Achievement entity that acts as a checkpoint.
- * When executed, it updates the player's spawn point.
- */
 public class Achievement extends Entity implements Executable {
     private String name;
     private String description;
@@ -31,19 +27,34 @@ public class Achievement extends Entity implements Executable {
 
     @Override
     public void draw(Graphics2D g2) {
-        // Simple representation: a gold star or trophy
-        g2.setColor(unlocked ? Color.YELLOW : Color.GRAY);
-        g2.fillRect(x, y, width, height);
-        g2.setColor(Color.BLACK);
-        g2.drawRect(x, y, width, height);
-        g2.drawString(unlocked ? "★" : "?", x + width / 4, y + height / 2);
+        // Draw a gold star shape
+        Color starColor = unlocked ? new Color(255, 215, 0) : new Color(150, 150, 150);
+        g2.setColor(starColor);
+
+        int cx = x + width / 2;
+        int cy = y + height / 2;
+        int r = width / 2;
+
+        // 5-pointed star using polygon
+        int[] xPoints = new int[10];
+        int[] yPoints = new int[10];
+        for (int i = 0; i < 10; i++) {
+            double angle = Math.PI / 2 + i * Math.PI / 5;
+            int radius = (i % 2 == 0) ? r : r / 2;
+            xPoints[i] = cx + (int)(radius * Math.cos(angle));
+            yPoints[i] = cy - (int)(radius * Math.sin(angle));
+        }
+        g2.fillPolygon(xPoints, yPoints, 10);
+
+        // Border
+        g2.setColor(unlocked ? new Color(180, 140, 0) : new Color(100, 100, 100));
+        g2.drawPolygon(xPoints, yPoints, 10);
     }
 
     @Override
     public void execute() {
         if (!unlocked) {
             unlocked = true;
-            System.out.println("Achievement Unlocked: " + name + " - " + description);
             if (player != null) {
                 player.setSpawnPoint(this.x, this.y);
             }

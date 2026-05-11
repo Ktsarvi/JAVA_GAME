@@ -6,6 +6,7 @@ import items.Key;
 import items.Crowbar;
 import input.KeyboardHandler;
 import graphics.Assets;
+import graphics.Animator;
 import utils.Constants;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -17,6 +18,8 @@ public class Player extends LivingBeing {
     private KeyboardHandler keyHandler;
     private int direction; // 0=up, 1=down, 2=left, 3=right
     private int attackCooldown;
+    private Animator walkAnimator;
+    private boolean moving;
 
     public Player(int x, int y, int width, int height) {
         super(x, y, width, height, 100, 10, 4);
@@ -26,6 +29,11 @@ public class Player extends LivingBeing {
         this.direction = 1; // facing down
         this.attackCooldown = 0;
         this.sprite = Assets.player;
+
+        // Set up walk animation (4 frames, cycle every 8 ticks)
+        if (Assets.playerWalkFrames != null) {
+            walkAnimator = new Animator(Assets.playerWalkFrames, 8);
+        }
     }
 
     @Override
@@ -40,36 +48,27 @@ public class Player extends LivingBeing {
         if (keyHandler.left)  { dx = -speed; direction = 2; }
         if (keyHandler.right) { dx =  speed; direction = 3; }
 
+        moving = (dx != 0 || dy != 0);
+
+        if (moving && walkAnimator != null) {
+            walkAnimator.update();
+            sprite = walkAnimator.getCurrentFrame();
+        } else if (!moving && Assets.playerWalkFrames != null) {
+            sprite = Assets.playerWalkFrames[0]; // standing frame
+        }
+
         move(dx, dy);
     }
 
     @Override
     public void draw(Graphics2D g2) {
         if (sprite != null) {
-            g2.drawImage(sprite, x, y, width, height, null);
-        } else {
-            // Procedural player drawing — blue body with direction indicator
-            g2.setColor(new Color(40, 100, 200));
-            g2.fillRoundRect(x, y, width, height, 8, 8);
-
-            // Direction arrow
-            g2.setColor(new Color(200, 220, 255));
-            int cx = x + width / 2;
-            int cy = y + height / 2;
-            switch (direction) {
-                case 0: g2.fillPolygon(new int[]{cx, cx - 6, cx + 6}, new int[]{y + 4, y + 14, y + 14}, 3); break;
-                case 1: g2.fillPolygon(new int[]{cx, cx - 6, cx + 6}, new int[]{y + height - 4, y + height - 14, y + height - 14}, 3); break;
-                case 2: g2.fillPolygon(new int[]{x + 4, x + 14, x + 14}, new int[]{cy, cy - 6, cy + 6}, 3); break;
-                case 3: g2.fillPolygon(new int[]{x + width - 4, x + width - 14, x + width - 14}, new int[]{cy, cy - 6, cy + 6}, 3); break;
+            // Flip sprite when moving left
+            if (direction == 2) {
+                g2.drawImage(sprite, x + width, y, -width, height, null);
+            } else {
+                g2.drawImage(sprite, x, y, width, height, null);
             }
-
-            // Eyes
-            g2.setColor(Color.WHITE);
-            g2.fillOval(x + 10, y + 12, 8, 8);
-            g2.fillOval(x + width - 18, y + 12, 8, 8);
-            g2.setColor(Color.BLACK);
-            g2.fillOval(x + 12, y + 14, 4, 4);
-            g2.fillOval(x + width - 16, y + 14, 4, 4);
         }
 
         // Health bar above player
@@ -118,7 +117,6 @@ public class Player extends LivingBeing {
     public void setSpawnPoint(int x, int y) {
         this.spawnX = x;
         this.spawnY = y;
-        System.out.println("Spawn point updated to: " + x + ", " + y);
     }
 
     public void setKeyboardHandler(KeyboardHandler kh) { this.keyHandler = kh; }

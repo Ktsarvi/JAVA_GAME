@@ -1,5 +1,7 @@
 package items;
 
+import graphics.Assets;
+
 public class Gun extends Item {
 
     private int cooldown;
@@ -10,6 +12,7 @@ public class Gun extends Item {
         this.consumable = false;
         this.cooldown = 20;
         this.currentCooldown = 0;
+        this.icon = Assets.gunIcon;
     }
 
     @Override

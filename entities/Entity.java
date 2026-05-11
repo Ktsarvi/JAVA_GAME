@@ -1,9 +1,7 @@
 package entities;
 
-import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public abstract class Entity {  // It is abstract because we will extend it
 

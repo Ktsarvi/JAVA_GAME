@@ -198,8 +198,8 @@ public class Dungeon {
         tm5.setTile(11, 3, TileManager.WALL);
         tm5.setTile(11, 8, TileManager.WALL);
 
-        // BOSS
-        Enemy boss = new Enemy(350, 200, 64, 64, 150, 15, 1, 400);
+        // BOSS — bigger than normal enemies
+        Enemy boss = new Enemy(350, 200, 96, 96, 150, 15, 1, 400);
         boss.setBoss(true);
         boss.setTarget(player);
         boss.addLoot(new Potion());

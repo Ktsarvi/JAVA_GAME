@@ -201,7 +201,7 @@ public class GamePanel extends JPanel implements Runnable {
         if (currentRoom.getId().equals("room5")) {
             boolean allDead = true;
             for (Enemy e : enemies) { if (e.isActive()) { allDead = false; break; } }
-            if (allDead) gameState = GameState.WIN;
+            if (allDead && !enemies.isEmpty()) gameState = GameState.WIN;
         }
     }
 
