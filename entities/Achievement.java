@@ -9,13 +9,15 @@ public class Achievement extends Entity implements Executable {
     private String description;
     private boolean unlocked;
     private Player player;
+    private String roomId;
 
-    public Achievement(int x, int y, int width, int height, String name, String description, Player player) {
+    public Achievement(int x, int y, int width, int height, String name, String description, Player player, String roomId) {
         super(x, y, width, height);
         this.name = name;
         this.description = description;
         this.unlocked = false;
         this.player = player;
+        this.roomId = roomId;
     }
 
     @Override
@@ -56,7 +58,7 @@ public class Achievement extends Entity implements Executable {
         if (!unlocked) {
             unlocked = true;
             if (player != null) {
-                player.setSpawnPoint(this.x, this.y);
+                player.setSpawnPoint(this.x, this.y, this.roomId);
             }
         }
     }

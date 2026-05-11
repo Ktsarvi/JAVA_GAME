@@ -193,7 +193,7 @@ public class GamePanel extends JPanel implements Runnable {
         // Check player death
         if (!player.isAlive()) {
             player.respawn();
-            loadRoom(dungeon.getRoom(currentRoom.getId()));
+            loadRoom(dungeon.getRoom(player.getSpawnRoomId()));
             inventoryUI.showMessage("You died! Respawning...");
         }
 
@@ -241,14 +241,11 @@ public class GamePanel extends JPanel implements Runnable {
             if (e instanceof Chest && !((Chest)e).isBroken()) {
                 Chest chest = (Chest) e;
                 if (player.getInventory().has("Crowbar")) {
-                    player.getInventory().remove(player.getInventory().get("Crowbar"));
                     var loot = chest.breakChest();
                     if (loot != null) for (var item : loot) player.getInventory().add(item);
                     inventoryUI.showMessage("Chest opened!");
                 } else {
-                    var loot = chest.breakChest();
-                    if (loot != null) for (var item : loot) player.getInventory().add(item);
-                    inventoryUI.showMessage("Chest opened!");
+                    inventoryUI.showMessage("You need a Crowbar!");
                 }
             }
 
@@ -274,7 +271,20 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void handleMeleeAttack(List<Enemy> enemies) {
-        if (!keyHandler.attack || !player.canAttack()) return;
+        if (!keyHandler.attack) return;
+
+        Item weapon = player.getEquippedWeapon();
+        if (weapon instanceof Gun) {
+            Gun gun = (Gun) weapon;
+            if (gun.canFire()) {
+                gun.fire();
+                fireBullet();
+                inventoryUI.showMessage("Fired!");
+            }
+            return;
+        }
+
+        if (!player.canAttack()) return;
         player.performAttack();
 
         for (Enemy e : enemies) {
@@ -330,12 +340,12 @@ public class GamePanel extends JPanel implements Runnable {
             inventoryUI.showMessage("Used " + item.getName() + " (+" + ((Food)item).getHealAmount() + " HP)");
             if (item.isConsumable()) player.getInventory().remove(item);
         } else if (item instanceof Gun) {
-            Gun gun = (Gun) item;
-            gun.updateCooldown();
-            if (gun.canFire()) {
-                gun.fire();
-                fireBullet();
-                inventoryUI.showMessage("Fired!");
+            if (player.getEquippedWeapon() == item) {
+                player.setEquippedWeapon(null);
+                inventoryUI.showMessage("Unequipped Gun");
+            } else {
+                player.setEquippedWeapon(item);
+                inventoryUI.showMessage("Equipped Gun");
             }
         } else {
             inventoryUI.showMessage(item.getName() + " - can't use directly");

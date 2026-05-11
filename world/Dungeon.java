@@ -33,9 +33,9 @@ public class Dungeon {
         tm1.setTile(10, 7, TileManager.WALL);
         tm1.setTile(10, 8, TileManager.WALL);
 
-        // Items: apple for healing, crowbar for chests
+        // Items: apple for healing, key for door
         Chest chest1 = new Chest(300, 200, 44, 44);
-        chest1.addItem(new Crowbar());
+        chest1.addItem(new Key(1));
         chest1.addItem(new Apple());
         room1.addItem(chest1);
 
@@ -46,11 +46,11 @@ public class Dungeon {
         // Easy enemy
         Enemy e1 = new Enemy(400, 300, 44, 44, 20, 5, 1, 150);
         e1.setTarget(player);
-        e1.addLoot(new Key(1));
+        e1.addLoot(new Crowbar());
         room1.addLivingBeing(e1);
 
         // Achievement checkpoint
-        Achievement ach1 = new Achievement(100, 500, 40, 40, "First Steps", "Enter the dungeon", player);
+        Achievement ach1 = new Achievement(100, 500, 40, 40, "First Steps", "Enter the dungeon", player, "room1");
         room1.addItem(ach1);
 
         // Door to room 2 (locked, needs key 1)
@@ -92,7 +92,7 @@ public class Dungeon {
         chest2.addItem(new Potion());
         room2.addItem(chest2);
 
-        Achievement ach2 = new Achievement(350, 500, 40, 40, "Corridor Cleared", "Survive the corridor", player);
+        Achievement ach2 = new Achievement(350, 500, 40, 40, "Corridor Cleared", "Survive the corridor", player, "room2");
         room2.addItem(ach2);
 
         // Door to room 3
@@ -136,7 +136,7 @@ public class Dungeon {
         e3.addLoot(new Key(3));
         room3.addLivingBeing(e3);
 
-        Achievement ach3 = new Achievement(400, 500, 40, 40, "Armed Up", "Find the gun", player);
+        Achievement ach3 = new Achievement(400, 500, 40, 40, "Armed Up", "Find the gun", player, "room3");
         room3.addItem(ach3);
 
         Door door3to4 = new Door(Constants.SCREEN_WIDTH - 48, Constants.SCREEN_HEIGHT / 2 - 22, 44, 44, true, 3);
@@ -177,7 +177,7 @@ public class Dungeon {
         chest4.addItem(new Potion());
         room4.addItem(chest4);
 
-        Achievement ach4 = new Achievement(350, 500, 40, 40, "Gauntlet Runner", "Survive the gauntlet", player);
+        Achievement ach4 = new Achievement(350, 500, 40, 40, "Gauntlet Runner", "Survive the gauntlet", player, "room4");
         room4.addItem(ach4);
 
         Door door4to5 = new Door(Constants.SCREEN_WIDTH - 48, Constants.SCREEN_HEIGHT / 2 - 22, 44, 44, true, 4);
@@ -199,7 +199,7 @@ public class Dungeon {
         tm5.setTile(11, 8, TileManager.WALL);
 
         // BOSS — bigger than normal enemies
-        Enemy boss = new Enemy(350, 200, 96, 96, 150, 15, 1, 400);
+        Enemy boss = new Enemy(350, 200, 64, 64, 150, 15, 1, 400);
         boss.setBoss(true);
         boss.setTarget(player);
         boss.addLoot(new Potion());

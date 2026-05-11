@@ -4,6 +4,8 @@ import managers.Inventory;
 import items.Food;
 import items.Key;
 import items.Crowbar;
+import items.Gun;
+import items.Item;
 import input.KeyboardHandler;
 import graphics.Assets;
 import graphics.Animator;
@@ -15,11 +17,13 @@ public class Player extends LivingBeing {
 
     private Inventory inventory;
     private int spawnX, spawnY;
+    private String spawnRoomId = "room1";
     private KeyboardHandler keyHandler;
     private int direction; // 0=up, 1=down, 2=left, 3=right
     private int attackCooldown;
     private Animator walkAnimator;
     private boolean moving;
+    private Item equippedWeapon;
 
     public Player(int x, int y, int width, int height) {
         super(x, y, width, height, 100, 10, 4);
@@ -39,6 +43,9 @@ public class Player extends LivingBeing {
     @Override
     public void update() {
         if (attackCooldown > 0) attackCooldown--;
+        if (equippedWeapon instanceof Gun) {
+            ((Gun) equippedWeapon).updateCooldown();
+        }
 
         if (keyHandler == null) return;
 
@@ -114,9 +121,10 @@ public class Player extends LivingBeing {
         attackCooldown = Constants.ATTACK_COOLDOWN;
     }
 
-    public void setSpawnPoint(int x, int y) {
+    public void setSpawnPoint(int x, int y, String roomId) {
         this.spawnX = x;
         this.spawnY = y;
+        this.spawnRoomId = roomId;
     }
 
     public void setKeyboardHandler(KeyboardHandler kh) { this.keyHandler = kh; }
@@ -124,4 +132,7 @@ public class Player extends LivingBeing {
     public Inventory getInventory() { return inventory; }
     public int getSpawnX() { return spawnX; }
     public int getSpawnY() { return spawnY; }
+    public String getSpawnRoomId() { return spawnRoomId; }
+    public Item getEquippedWeapon() { return equippedWeapon; }
+    public void setEquippedWeapon(Item weapon) { this.equippedWeapon = weapon; }
 }

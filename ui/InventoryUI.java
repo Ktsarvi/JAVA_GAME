@@ -36,6 +36,7 @@ public class InventoryUI {
 
         if (visible && keyHandler.numberPressed >= 1 && keyHandler.numberPressed <= 9) {
             selectedSlot = keyHandler.numberPressed - 1;
+            keyHandler.numberPressed = -1;
         }
     }
 
@@ -120,6 +121,12 @@ public class InventoryUI {
                 g.setFont(new Font("SansSerif", Font.PLAIN, 10));
                 g.setColor(new Color(180, 170, 200));
                 g.drawString(item.getName(), sx, sy + slotSize + 12);
+
+                if (player.getEquippedWeapon() == item) {
+                    g.setFont(new Font("SansSerif", Font.BOLD, 12));
+                    g.setColor(Color.YELLOW);
+                    g.drawString("E", sx + slotSize - 12, sy + 12);
+                }
             }
         }
 
