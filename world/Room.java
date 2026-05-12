@@ -33,11 +33,11 @@ public class Room {
     }
 
     public void draw(Graphics2D g) {
-        // Floor
+        
         g.setColor(new Color(60, 50, 40));
         g.fillRect(x, y, width, height);
 
-        // Walls
+        
         g.setColor(new Color(30, 20, 10));
         g.setStroke(new BasicStroke(4));
         g.drawRect(x, y, width, height);
@@ -55,7 +55,7 @@ public class Room {
         return all;
     }
 
-    // Items
+    
     public void addItem(Entity item) {
         items.add(item); 
     }
@@ -68,7 +68,7 @@ public class Room {
         return items;
     }
 
-    // Living beings
+    
     public void addLivingBeing(Entity lb) {
         livingBeings.add(lb);
     }
@@ -81,7 +81,7 @@ public class Room {
         return livingBeings;
     }
 
-    // Doors
+    
     public void addDoor(Door door) { 
         doors.add(door); 
     }

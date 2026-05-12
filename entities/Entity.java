@@ -3,16 +3,16 @@ package entities;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-public abstract class Entity {  // It is abstract because we will extend it
+public abstract class Entity {  
 
-    // We use protected to allow access in subclasses (inheritance)
-    // Even if they are in different packages.
+    
+    
     protected int x, y;
     protected int width, height;
-    protected BufferedImage sprite;  // Picture of object(how it will be drawn in the game)
-    protected boolean active = true; // if false then EntityManager removes it
+    protected BufferedImage sprite;  
+    protected boolean active = true; 
 
-    // Constructor
+    
     public Entity(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
@@ -20,10 +20,10 @@ public abstract class Entity {  // It is abstract because we will extend it
         this.height = height;
     }
 
-    public abstract void update();  // Updated information about logic/movements/animation of object
-    public abstract void draw(Graphics2D g2);  // It loads its sprite from spriteloader and draws itself
+    public abstract void update();  
+    public abstract void draw(Graphics2D g2);  
 
-    // Axis-aligned bounding box collision
+    
     public boolean collidesWith(Entity other) {
         return x < other.x + other.width
             && x + width > other.x
@@ -31,9 +31,9 @@ public abstract class Entity {  // It is abstract because we will extend it
             && y + height > other.y;
     }
 
-    public boolean isActive() { return active; }  // if it is not active EntityMangaer will delete current object
+    public boolean isActive() { return active; }  
 
-    // Setters
+    
     public void setActive(boolean active) { this.active = active; }
 
     public void setSprite(BufferedImage sprite) { this.sprite = sprite; }
@@ -43,7 +43,7 @@ public abstract class Entity {  // It is abstract because we will extend it
         this.y = y;
     }
 
-    // Getters
+    
     public int getX() { return x; }
     public int getY() { return y; }
     public int getWidth() { return width; }

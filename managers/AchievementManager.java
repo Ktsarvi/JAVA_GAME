@@ -4,9 +4,7 @@ import entities.Achievement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Manages game achievements and tracks progress.
- */
+
 public class AchievementManager {
     private List<Achievement> achievements;
 

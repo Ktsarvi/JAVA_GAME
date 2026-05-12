@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 public class Assets {
 
-    // Entities
+    
     public static BufferedImage player;
     public static BufferedImage[] playerWalkFrames;
     public static BufferedImage enemy;
@@ -18,7 +18,7 @@ public class Assets {
     public static BufferedImage achievement;
     public static BufferedImage bullet;
 
-    // Items (icons for inventory)
+    
     public static BufferedImage keyIcon;
     public static BufferedImage appleIcon;
     public static BufferedImage cakeIcon;
@@ -26,20 +26,20 @@ public class Assets {
     public static BufferedImage crowbarIcon;
     public static BufferedImage gunIcon;
 
-    // Tiles
+    
     public static BufferedImage floorTile;
     public static BufferedImage wallTile;
 
     public static void load() {
-        // Player — strip has 4 walk frames (64x32), each frame is 16x32
+        
         playerWalkFrames = SpriteLoader.loadSpriteSheet(
             "resources/sprites/player.png", 16, 32
         );
         if (playerWalkFrames != null && playerWalkFrames.length > 0) {
-            player = playerWalkFrames[0]; // default standing frame
+            player = playerWalkFrames[0]; 
         }
 
-        // Enemy — use first frame from south-facing walk strip (16x24 per frame)
+        
         BufferedImage[] enemyFrames = SpriteLoader.loadSpriteSheet(
             "resources/sprites/enemy_Soldier_WALK_SOUTH_strip4.png", 16, 24
         );

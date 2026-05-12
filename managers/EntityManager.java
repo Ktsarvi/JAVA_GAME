@@ -21,11 +21,11 @@ public class EntityManager {
     }
 
     public void update() {
-        // Add pending entities
+        
         entities.addAll(toAdd);
         toAdd.clear();
 
-        // Update all, collect inactive for removal
+        
         List<Entity> toRemove = new ArrayList<>();
         for (Entity e : entities) {
             e.update();

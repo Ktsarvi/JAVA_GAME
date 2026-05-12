@@ -11,7 +11,7 @@ public class KeyboardHandler implements KeyListener {
     public boolean inventory;
     public boolean pause;
     public boolean enter;
-    public int numberPressed = -1;  // 1-9 for item slot selection
+    public int numberPressed = -1;  
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -48,6 +48,6 @@ public class KeyboardHandler implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        // Not used
+        
     }
 }

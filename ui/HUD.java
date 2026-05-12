@@ -16,11 +16,11 @@ public class HUD {
     public void draw(Graphics2D g, String roomName, int achievementCount, int totalAchievements) {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // Background bar
+        
         g.setColor(new Color(0, 0, 0, 150));
         g.fillRect(0, 0, Constants.SCREEN_WIDTH, 40);
 
-        // Health bar
+        
         int barX = 10, barY = 8, barW = 200, barH = 22;
         g.setColor(new Color(40, 40, 40));
         g.fillRoundRect(barX, barY, barW, barH, 8, 8);
@@ -33,19 +33,19 @@ public class HUD {
         g.setColor(new Color(180, 180, 180));
         g.drawRoundRect(barX, barY, barW, barH, 8, 8);
 
-        // HP text
+        
         g.setFont(new Font("SansSerif", Font.BOLD, 14));
         g.setColor(Color.WHITE);
         String hpText = player.getHp() + " / " + player.getMaxHp();
         FontMetrics fm = g.getFontMetrics();
         g.drawString(hpText, barX + (barW - fm.stringWidth(hpText)) / 2, barY + 16);
 
-        // Room name
+        
         g.setFont(new Font("SansSerif", Font.BOLD, 14));
         g.setColor(new Color(200, 180, 240));
         g.drawString(roomName, Constants.SCREEN_WIDTH / 2 - 40, 25);
 
-        // Key count
+        
         Inventory inv = player.getInventory();
         int keys = 0;
         for (var item : inv.getSlots()) {
@@ -54,7 +54,7 @@ public class HUD {
         g.setColor(new Color(255, 215, 0));
         g.drawString("Keys: " + keys, Constants.SCREEN_WIDTH - 200, 25);
 
-        // Achievements
+        
         g.setColor(new Color(180, 220, 255));
         g.drawString("Stars: " + achievementCount + "/" + totalAchievements, Constants.SCREEN_WIDTH - 100, 25);
     }

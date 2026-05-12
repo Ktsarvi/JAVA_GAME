@@ -18,7 +18,7 @@ public class Chest extends Entity implements Activatable {
 
     @Override
     public void update() {
-        // Chest has no movement logic so we dont have anything 
+        
     }
 
     @Override
@@ -37,8 +37,8 @@ public class Chest extends Entity implements Activatable {
             return null;
         }
         broken = true;
-        sprite = Assets.chestOpen; // Switch to open chest sprite
-        this.active = false; // mark for removal from EntityManager
+        sprite = Assets.chestOpen; 
+        this.active = false; 
 
         return items;
     }

@@ -139,24 +139,24 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void updatePlaying() {
-        // Pause toggle
+        
         if (!keyHandler.pause) pauseReleased = true;
         if (keyHandler.pause && pauseReleased) { gameState = GameState.PAUSED; pauseReleased = false; return; }
 
-        // Inventory
+        
         inventoryUI.update();
         handleItemUse();
 
-        // Player update
+        
         player.update();
 
-        // Tile collision
+        
         handleTileCollision(player);
 
-        // Entity manager
+        
         entityManager.update();
 
-        // Bullet updates
+        
         List<Bullet> deadBullets = new ArrayList<>();
         for (Bullet b : bullets) {
             b.update();
@@ -164,7 +164,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
         bullets.removeAll(deadBullets);
 
-        // Collisions
+        
         List<Enemy> enemies = entityManager.getEntitiesOfType(Enemy.class);
         List<Door> doors = entityManager.getEntitiesOfType(Door.class);
 
@@ -173,31 +173,31 @@ public class GamePanel extends JPanel implements Runnable {
         CollisionManager.checkBulletEnemyCollision(bullets, enemies);
         CollisionManager.clampToRoom(player, 0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
-        // Clamp enemies to room too
+        
         for (Enemy e : enemies) {
             if (e.isActive()) handleTileCollision(e);
         }
 
-        // Interaction (E key)
+        
         handleInteraction();
 
-        // Attack (Space)
+        
         handleMeleeAttack(enemies);
 
-        // Check door passage
+        
         handleDoorTransition(doors);
 
-        // Enemy loot drops
+        
         handleEnemyDeaths(enemies);
 
-        // Check player death
+        
         if (!player.isAlive()) {
             player.respawn();
             loadRoom(dungeon.getRoom(player.getSpawnRoomId()));
             inventoryUI.showMessage("You died! Respawning...");
         }
 
-        // Win condition: all enemies dead in room5
+        
         if (currentRoom.getId().equals("room5")) {
             boolean allDead = true;
             for (Enemy e : enemies) { if (e.isActive()) { allDead = false; break; } }
@@ -210,10 +210,10 @@ public class GamePanel extends JPanel implements Runnable {
         int ts = Constants.TILE_SIZE;
         int bx = being.getX(), by = being.getY(), bw = being.getWidth(), bh = being.getHeight();
 
-        // Check corners
+        
         if (currentTileManager.isSolidAtPixel(bx, by) || currentTileManager.isSolidAtPixel(bx + bw - 1, by)
             || currentTileManager.isSolidAtPixel(bx, by + bh - 1) || currentTileManager.isSolidAtPixel(bx + bw - 1, by + bh - 1)) {
-            // Simple pushback: find nearest free position
+            
             int col = (bx + bw / 2) / ts;
             int row = (by + bh / 2) / ts;
             int safeX = col * ts + (ts - bw) / 2;
@@ -225,11 +225,11 @@ public class GamePanel extends JPanel implements Runnable {
     private void handleInteraction() {
         if (!keyHandler.interact) return;
 
-        // Check entities for interaction
+        
         for (Entity e : new ArrayList<>(entityManager.getEntities())) {
             if (!e.isActive()) continue;
 
-            // Expand player bounds by 10px for interaction check since solid objects push player out
+            
             int range = 10;
             boolean inRange = player.getX() - range < e.getX() + e.getWidth() &&
                               player.getX() + player.getWidth() + range > e.getX() &&

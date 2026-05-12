@@ -20,7 +20,7 @@ public class CollisionManager {
         for (Door door : doors) {
             if (!door.isActive() || !door.isLocked()) continue;
             if (player.collidesWith(door)) {
-                // Push player back
+                
                 int dx = player.getX() - door.getX();
                 int dy = player.getY() - door.getY();
                 if (Math.abs(dx) > Math.abs(dy)) {
@@ -58,7 +58,7 @@ public class CollisionManager {
         int ew = entity.getWidth();
         int eh = entity.getHeight();
 
-        int margin = 4; // wall thickness
+        int margin = 4; 
         if (ex < roomX + margin) entity.setPosition(roomX + margin, ey);
         if (ey < roomY + margin) entity.setPosition(entity.getX(), roomY + margin);
         if (ex + ew > roomX + roomW - margin) entity.setPosition(roomX + roomW - margin - ew, entity.getY());

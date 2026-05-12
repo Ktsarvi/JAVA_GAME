@@ -39,17 +39,17 @@ public class Enemy extends LivingBeing {
         if (sprite != null) {
             g2.drawImage(sprite, x, y, width, height, null);
         } else {
-            // Fallback: colored rectangle if sprite failed to load
+            
             g2.setColor(isBoss ? new Color(180, 30, 30) : new Color(160, 50, 50));
             g2.fillRoundRect(x, y, width, height, 6, 6);
             if (isBoss) {
-                // Gold crown for boss
+                
                 g2.setColor(new Color(255, 215, 0));
                 g2.fillRect(x + 4, y - 6, width - 8, 6);
             }
         }
 
-        // Health bar above enemy
+        
         int barWidth = width;
         int barHeight = 4;
         int barY = y - 8;

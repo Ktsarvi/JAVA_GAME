@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 
 public class Door extends Entity {
     private boolean locked;
-    private int doorId;  // For relevant match of key with door
+    private int doorId;  
     private String targetRoomId;
     private int targetX, targetY;
 
@@ -23,7 +23,7 @@ public class Door extends Entity {
 
     @Override
     public void update() {
-        // Door doesn't move so it is empty
+        
     }
 
     @Override
@@ -36,7 +36,7 @@ public class Door extends Entity {
     public void unlock(Key key) {
         if (locked && key != null && key.getId() == doorId) {
             locked = false;
-            sprite = Assets.doorOpen; // Switch to open door sprite
+            sprite = Assets.doorOpen; 
         }
     }
 

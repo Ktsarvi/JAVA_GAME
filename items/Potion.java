@@ -11,6 +11,6 @@ public class Potion extends Food {
 
   @Override
   public void use(){
-    // Sound/Animation of eating
+    
   }
 }

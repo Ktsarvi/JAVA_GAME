@@ -11,29 +11,29 @@ public class SpriteLoader {
     public static BufferedImage load(String path) {
         BufferedImage img = null;
 
-        // Try classpath first
+        
         InputStream is = SpriteLoader.class.getResourceAsStream("/" + path);
         if (is != null) {
             try {
                 img = ImageIO.read(is);
             } catch (IOException e) {
-                // fall through
+                
             }
         }
 
-        // Try file system
+        
         if (img == null) {
             File file = new File(path);
             if (file.exists()) {
                 try {
                     img = ImageIO.read(file);
                 } catch (IOException e) {
-                    // fall through
+                    
                 }
             }
         }
 
-        return img; // null means "use procedural drawing"
+        return img; 
     }
 
     public static BufferedImage[] loadSpriteSheet(String path, int frameWidth, int frameHeight) {

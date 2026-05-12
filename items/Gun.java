@@ -17,8 +17,8 @@ public class Gun extends Item {
 
     @Override
     public void use() {
-        // Bullet creation is handled by GamePanel/CollisionManager
-        // This just checks if gun can fire
+        
+        
     }
 
     public boolean canFire() {

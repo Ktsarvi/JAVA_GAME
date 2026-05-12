@@ -19,7 +19,7 @@ public class Barrel extends Entity implements Activatable {
 
     @Override
     public void update() {
-        // Barrel logic if needed
+        
     }
 
     @Override
@@ -36,7 +36,7 @@ public class Barrel extends Entity implements Activatable {
     public List<Item> breakBarrel() {
         if (activated) return null;
         activated = true;
-        sprite = Assets.barrelBroken; // Switch to broken barrel sprite
+        sprite = Assets.barrelBroken; 
         this.active = false;
         return items;
     }

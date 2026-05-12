@@ -22,7 +22,7 @@ public class Bullet extends Entity {
         x += dx;
         y += dy;
 
-        // Deactivate if out of screen bounds
+        
         if (x < -50 || x > Constants.SCREEN_WIDTH + 50
                 || y < -50 || y > Constants.SCREEN_HEIGHT + 50) {
             active = false;

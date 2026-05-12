@@ -19,7 +19,7 @@ public class Player extends LivingBeing {
     private int spawnX, spawnY;
     private String spawnRoomId = "room1";
     private KeyboardHandler keyHandler;
-    private int direction; // 0=up, 1=down, 2=left, 3=right
+    private int direction; 
     private int attackCooldown;
     private Animator walkAnimator;
     private boolean moving;
@@ -30,11 +30,11 @@ public class Player extends LivingBeing {
         this.spawnX = x;
         this.spawnY = y;
         this.inventory = new Inventory(10);
-        this.direction = 1; // facing down
+        this.direction = 1; 
         this.attackCooldown = 0;
         this.sprite = Assets.player;
 
-        // Set up walk animation (4 frames, cycle every 8 ticks)
+        
         if (Assets.playerWalkFrames != null) {
             walkAnimator = new Animator(Assets.playerWalkFrames, 8);
         }
@@ -61,7 +61,7 @@ public class Player extends LivingBeing {
             walkAnimator.update();
             sprite = walkAnimator.getCurrentFrame();
         } else if (!moving && Assets.playerWalkFrames != null) {
-            sprite = Assets.playerWalkFrames[0]; // standing frame
+            sprite = Assets.playerWalkFrames[0]; 
         }
 
         move(dx, dy);
@@ -70,7 +70,7 @@ public class Player extends LivingBeing {
     @Override
     public void draw(Graphics2D g2) {
         if (sprite != null) {
-            // Flip sprite when moving left
+            
             if (direction == 2) {
                 g2.drawImage(sprite, x + width, y, -width, height, null);
             } else {
@@ -78,7 +78,7 @@ public class Player extends LivingBeing {
             }
         }
 
-        // Health bar above player
+        
         int barWidth = width;
         int barHeight = 4;
         int barY = y - 8;

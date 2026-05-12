@@ -29,7 +29,7 @@ public class Achievement extends Entity implements Executable {
 
     @Override
     public void draw(Graphics2D g2) {
-        // Draw a gold star shape
+        
         Color starColor = unlocked ? new Color(255, 215, 0) : new Color(150, 150, 150);
         g2.setColor(starColor);
 
@@ -37,7 +37,7 @@ public class Achievement extends Entity implements Executable {
         int cy = y + height / 2;
         int r = width / 2;
 
-        // 5-pointed star using polygon
+        
         int[] xPoints = new int[10];
         int[] yPoints = new int[10];
         for (int i = 0; i < 10; i++) {
@@ -48,7 +48,7 @@ public class Achievement extends Entity implements Executable {
         }
         g2.fillPolygon(xPoints, yPoints, 10);
 
-        // Border
+        
         g2.setColor(unlocked ? new Color(180, 140, 0) : new Color(100, 100, 100));
         g2.drawPolygon(xPoints, yPoints, 10);
     }

@@ -11,6 +11,6 @@ public class Apple extends Food {
 
   @Override
   public void use(){
-    // Sound/Animation of eating
+    
   }
 }

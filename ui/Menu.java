@@ -47,7 +47,7 @@ public class Menu {
         g.setPaint(bg);
         g.fillRect(0, 0, w, h);
 
-        // Ambient particles
+        
         g.setColor(new Color(255, 255, 255, 15));
         for (int i = 0; i < 30; i++) {
             int px = (int)(Math.sin(System.currentTimeMillis() * 0.001 + i * 0.7) * w/2 + w/2);
@@ -57,7 +57,7 @@ public class Menu {
 
         if (showControls) { drawControls(g, w, h); return; }
 
-        // Title
+        
         g.setFont(new Font("SansSerif", Font.BOLD, 52));
         FontMetrics fm = g.getFontMetrics();
         String title = "DUNGEON CRAWLER";
@@ -73,7 +73,7 @@ public class Menu {
         fm = g.getFontMetrics();
         g.drawString(sub, (w - fm.stringWidth(sub)) / 2, 175);
 
-        // Options
+        
         g.setFont(new Font("SansSerif", Font.BOLD, 28));
         fm = g.getFontMetrics();
         for (int i = 0; i < options.length; i++) {
