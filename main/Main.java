@@ -1,7 +1,7 @@
 package main;
 
-import utils.Constants;
 import javax.swing.JFrame;
+import utils.SoundManager; // Ensure this import exists!
 
 public class Main {
 
@@ -15,7 +15,12 @@ public class Main {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
+        
+        // Music initialization
+        SoundManager sound = new SoundManager();
+        sound.playMusic("bella_ciao.wav");
+        
+        // Start the game loop
         gamePanel.startGameThread();
     }
 }
